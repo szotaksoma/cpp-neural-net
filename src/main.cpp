@@ -31,7 +31,7 @@ Activations::Activation* parse_activation_function(char* arg) {
 
 int main(int argc, char* argv[]) {
 	if(argc < 4) {
-		cout << "Usage: " << argv[0] << " <from> <to> <step>" << endl;
+		cout << "Usage: " << argv[0] << " <from> <to> <step> [activation type (l|r|t|s)]" << endl;
 		return 1;
 	}
 	Activations::Activation* act;
