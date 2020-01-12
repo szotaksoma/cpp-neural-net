@@ -1,0 +1,41 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "make",
+      "command": "make",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}",
+      }
+    },
+    {
+      "type": "shell",
+      "label": "clean",
+      "command": "make clean",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}",
+      }
+    }
+  ],
+  "version": "2.0.0"
+}
