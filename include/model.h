@@ -2,12 +2,18 @@
 #define _MODEL
 
 #include "layers.h"
+#include <vector>
 
 namespace NeuralNet {
 
 	class Model {
 		public:
-			Layer* layers;
+			std::vector<Layer> layers;
+			void add_layer(Layer);
+			void build();
+			void describe();
+		private:
+			bool compiled = false;
 	};
 
 }

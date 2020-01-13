@@ -7,7 +7,7 @@
 namespace NeuralNet {
 
 	enum LayerType {
-		Input, Hidden, Output
+		INPUT, HIDDEN, OUTPUT
 	};
 	
 	class Layer {
@@ -19,20 +19,23 @@ namespace NeuralNet {
 			double* biases;
 			double* values;
 			LayerType type;
-			Layer* next;
-			Layer* previous;
 			Activations::Activation* activation;
 
-		private:
+		protected:
+			void initialize();
+			void bind(Layer* previous, Layer* next);
+			Layer* next = nullptr;
+			Layer* previous = nullptr;
+			bool bound = false;
+
 			friend class Model;
-			void set_next(Layer*);
-			void set_previous(Layer*);
 
 	};
 
 	class InputLayer : Layer {
 		public:
 			InputLayer(unsigned int);
+			void initialize();
 	};
 
 	class HiddenLayer : Layer {
@@ -41,7 +44,8 @@ namespace NeuralNet {
 	}
 
 	class OutputLayer : Layer {
-
+		public:
+			OutputLayer(unsigned int);
 	};
 
 }
