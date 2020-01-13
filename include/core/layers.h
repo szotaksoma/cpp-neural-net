@@ -33,18 +33,18 @@ namespace NeuralNet {
 
 	};
 
-	class InputLayer : Layer {
+	class InputLayer : public Layer {
 		public:
 			InputLayer(unsigned int);
 			void initialize();
 	};
 
-	class HiddenLayer : Layer {
+	class HiddenLayer : public Layer {
 		public:
 			HiddenLayer(unsigned int, Activations::ActivationType);
 	};
 
-	class OutputLayer : Layer {
+	class OutputLayer : public Layer {
 		public:
 			OutputLayer(unsigned int);
 	};

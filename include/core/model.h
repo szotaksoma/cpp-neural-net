@@ -8,10 +8,10 @@ namespace NeuralNet {
 
 	class Model {
 		public:
-			std::vector<Layer> layers;
-			void add_layer(Layer);
+			std::vector<Layer*> layers;
+			void add_layer(Layer*);
 			void compile();
-			~Model();
+			void dispose();
 		private:
 			bool compiled = false;
 	};
