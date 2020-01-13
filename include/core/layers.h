@@ -1,8 +1,8 @@
 #ifndef _LAYER
 #define _LAYER
 
-#include "model.h"
-#include "activations.h"
+#include "core/model.h"
+#include "core/activations.h"
 
 namespace NeuralNet {
 
@@ -20,6 +20,7 @@ namespace NeuralNet {
 			double* values;
 			LayerType type;
 			Activations::Activation* activation;
+			~Layer();
 
 		protected:
 			void initialize();
@@ -41,7 +42,7 @@ namespace NeuralNet {
 	class HiddenLayer : Layer {
 		public:
 			HiddenLayer(unsigned int, Activations::ActivationType);
-	}
+	};
 
 	class OutputLayer : Layer {
 		public:

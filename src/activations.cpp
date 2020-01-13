@@ -1,4 +1,5 @@
-#include "activations.h"
+#include <math.h>
+#include "core/activations.h"
 
 using namespace NeuralNet::Activations;
 

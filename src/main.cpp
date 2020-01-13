@@ -1,6 +1,6 @@
 #include <iostream>
 #include <iomanip>
-#include "activations.h"
+#include "core/activations.h"
 
 using namespace std;
 using namespace NeuralNet;

@@ -1,6 +1,8 @@
 #include <stdlib.h>
-#include "layers.h"
-#include "activations.h"
+#include "core/layers.h"
+#include "core/activations.h"
+#include "util/errors.h"
+
 
 using namespace std;
 using namespace NeuralNet;
@@ -15,9 +17,7 @@ void Layer::bind(Layer* previous, Layer* next) {
 
 void Layer::initialize() {
 	if(!bound) {
-		// TODO: raise exception
-		// Cannot initialize unbound layer
-		return;
+		Errors::layer_initialize_error("Unbound layer.");
 	}
 	// Allocate biases
 	biases = (double*) calloc(size, sizeof(double));
@@ -25,6 +25,18 @@ void Layer::initialize() {
 	weights = (double**) calloc(size, sizeof(double*));
 	for(unsigned int i = 0; i < size; i++) {
 		weights[i] = (double*) calloc(previous->size, sizeof(double));
+	}
+}
+
+Layer::~Layer() {
+	if(biases) {
+		free((void*)biases);
+	}
+	if(weights) {
+		for(unsigned int i = 0; i < size; i++) {
+			free((void*)weights[i]);
+		}
+		free((void*)weights);
 	}
 }
 
@@ -38,6 +50,10 @@ InputLayer::InputLayer(unsigned int size) {
 
 // Override Layer::initialize
 void InputLayer::initialize() {
+	if(!bound) {
+		// TODO: raise exception
+		// Cannot initialize unbound layer
+	}
 	biases = nullptr;
 	weights = nullptr;
 }

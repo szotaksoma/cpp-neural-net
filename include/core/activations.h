@@ -1,8 +1,6 @@
 #ifndef _ACTIVATIONS
 #define _ACTIVATIONS
 
-#include <math.h>
-
 namespace NeuralNet::Activations {
 
 	enum ActivationType {

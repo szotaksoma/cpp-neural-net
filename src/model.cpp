@@ -1,4 +1,5 @@
-#include "model.h"
+#include "core/model.h"
+#include "util/errors.h"
 
 using namespace NeuralNet;
 using namespace std;
@@ -7,11 +8,9 @@ void Model::add_layer(Layer layer) {
 	layers.push_back(layer);
 }
 
-void Model::build() {
+void Model::compile() {
 	if(layers.size() < 2) {
-		// TODO: raise exception
-		// Model must have at least 2 layers (input & output)
-		return;
+		throw Errors::model_compile_error("Model must have at least 2 layers.");
 	}
 	// Attach layers
 	layers[0].bind(nullptr, &layers[1]);
@@ -24,6 +23,8 @@ void Model::build() {
 	}
 }
 
-void Model::describe() {
-
+Model::~Model() {
+	for(Layer layer : layers) {
+		delete &layer;
+	}
 }

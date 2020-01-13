@@ -1,7 +1,7 @@
 #ifndef _MODEL
 #define _MODEL
 
-#include "layers.h"
+#include "core/layers.h"
 #include <vector>
 
 namespace NeuralNet {
@@ -10,8 +10,8 @@ namespace NeuralNet {
 		public:
 			std::vector<Layer> layers;
 			void add_layer(Layer);
-			void build();
-			void describe();
+			void compile();
+			~Model();
 		private:
 			bool compiled = false;
 	};
