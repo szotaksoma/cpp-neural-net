@@ -50,3 +50,20 @@ double TanH::function(double x) {
 double TanH::derivative(double x) {
 	return 1.0 - pow(tanh(x), 2.0);
 }
+
+// Helper functions
+
+Activation* default_activation(ActivationType type) {
+	switch(type) {
+		case LINEAR:
+			return new Linear();
+		case RELU:
+			return new ReLU();
+		case TANH:
+			return new TanH();
+		case SIGMOID:
+			return new Sigmoid();
+		default:
+			return new Linear();
+	}
+}
