@@ -3,7 +3,7 @@
 
 using namespace std;
 using namespace NeuralNet;
-using namespace Activations;
+using namespace NeuralNet::Activations;
 
 int main(int argc, char* argv[]) {
 

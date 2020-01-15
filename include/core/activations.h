@@ -13,8 +13,6 @@ namespace NeuralNet::Activations {
 			virtual double function(double) = 0;
 			// Derivative of activation function
 			virtual double derivative(double) = 0;
-
-			virtual ~Activation() = 0;
 	};
 
 	class Linear : public Activation {

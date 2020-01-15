@@ -18,6 +18,6 @@ int main(int argc, char* argv[]) {
 	Debug::timestamp_display(false);
 	Debug::info("(test) Some debug information.");
 	Debug::error("(test) An error occurred during some process.");
-
+	
 	return 0;
 }
