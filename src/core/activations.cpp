@@ -6,10 +6,13 @@ using namespace NeuralNet::Activations;
 // Linear
 
 Linear::Linear() {
+	this->type = ActivationType::LINEAR;
+	this->name = "Linear";
 	this->m = default_m;
 }
 
 Linear::Linear(double slope) {
+	this->type = ActivationType::LINEAR;
 	this->m = slope;
 }
 
@@ -23,6 +26,11 @@ double Linear::derivative(double x) {
 
 // Rectified Linear Unit (ReLU)
 
+ReLU::ReLU() {
+	this->type = ActivationType::RELU;
+	this->name = "ReLU";
+}
+
 double ReLU::function(double x) {
 	return x > 0.0 ? x : 0.0;
 }
@@ -32,6 +40,11 @@ double ReLU::derivative(double x) {
 }
 
 // Sigmoid
+
+Sigmoid::Sigmoid() {
+	this->type = ActivationType::SIGMOID;
+	this->name = "Sigmoid";
+}
 
 double Sigmoid::function(double x) {
 	return 1.0 / (1.0 + exp(-x));
@@ -44,6 +57,11 @@ double Sigmoid::derivative(double x) {
 
 // Hyperbolic tangent
 
+TanH::TanH() {
+	this->type = ActivationType::TANH;
+	this->name = "TanH";
+}
+
 double TanH::function(double x) {
 	return tanh(x);
 }
@@ -54,7 +72,7 @@ double TanH::derivative(double x) {
 
 // Helper functions
 
-Activation* default_activation(ActivationType type) {
+Activation* NeuralNet::Activations::default_activation(ActivationType type) {
 	switch(type) {
 		case LINEAR:
 			return new Linear();

@@ -1,7 +1,7 @@
 #ifndef _LAYER
 #define _LAYER
 
-#include "core/model.h"
+#include <string>
 #include "core/activations.h"
 
 namespace NeuralNet {
@@ -19,7 +19,13 @@ namespace NeuralNet {
 			double* biases;
 			double* values;
 			LayerType type;
+			const char* name;
 			Activations::Activation* activation;
+			// Get layer name
+			const char* get_name();
+			// Set layer name
+			void set_name(const char* name);
+			std::string describe();
 			~Layer();
 
 		protected:
@@ -35,18 +41,17 @@ namespace NeuralNet {
 
 	class InputLayer : public Layer {
 		public:
-			InputLayer(unsigned int);
-			void initialize();
+			InputLayer(unsigned int size, const char* name = "Input layer");
 	};
 
 	class HiddenLayer : public Layer {
 		public:
-			HiddenLayer(unsigned int, Activations::ActivationType);
+			HiddenLayer(unsigned int size, Activations::ActivationType, const char* name = "Hidden layer");
 	};
 
 	class OutputLayer : public Layer {
 		public:
-			OutputLayer(unsigned int);
+			OutputLayer(unsigned int size, const char* name = "Output layer");
 	};
 
 }

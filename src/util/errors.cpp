@@ -4,14 +4,15 @@
 
 using namespace std;
 using namespace NeuralNet;
-using namespace NeuralNet::Errors;
 
-runtime_error model_compile_error(const char* message) {
-	Debug::error(message);
-	return std::runtime_error(string("Model compilation failed: ").append(message));
+runtime_error Errors::model_compile_error(const char* message) {
+	string out = string("Model compilation failed: ").append(message);
+	Debug::error(out);
+	return runtime_error(out);
 }
 
-runtime_error layer_initialize_error(const char* message) {
-	Debug::error(message);
-	return std::runtime_error(string("Layer initialization failed: ").append(message));
+runtime_error Errors::layer_initialize_error(const char* message) {
+	string out = string("Layer initialization failed: ").append(message);
+	Debug::error(out);
+	return runtime_error(out);
 }
