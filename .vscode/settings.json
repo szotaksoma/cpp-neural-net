@@ -4,6 +4,7 @@
     "*.tcc": "cpp",
     "string": "cpp",
     "iomanip": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "stdexcept": "cpp"
   }
 }

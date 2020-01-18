@@ -1,3 +1,6 @@
+#include <string>
+#include <iomanip>
+#include <sstream>
 #include "core/model.h"
 #include "util/console.h"
 #include "util/errors.h"
@@ -5,15 +8,61 @@
 using namespace NeuralNet;
 using namespace std;
 
+Model::Model(const char* name) {
+	this->_name = name;
+}
+
+Model::~Model() {
+	this->dispose();
+}
+
+bool Model::is_compiled() {
+	return this->_compiled;
+}
+
+bool Model::is_disposed() {
+	return this->_disposed;
+}
+
+const char* Model::name() {
+	return this->_name;
+}
+
+void Model::rename(const char* name) {
+	this->_name = name;
+}
+
 void Model::add_layer(Layer* layer) {
 	layers.push_back(layer);
 }
 
+unsigned int Model::layer_count() {
+	return (unsigned int)layers.size();
+}
+
+Layer* Model::get_layer(unsigned int index) {
+	if(layers.size() > index) {
+		return layers[index];
+	}
+	throw Errors::layer_does_not_exist_error(string("index '") + to_string(index).append("'"));
+	return nullptr;
+}
+
+Layer* Model::get_layer(const char* name) {
+	for(Layer* layer : layers) {
+		if(string(layer->name()).compare(name) == 0) {
+			return layer;
+		}
+	}
+	throw Errors::layer_does_not_exist_error(string("name '").append(name).append("'"));
+	return nullptr;
+}
+
 void Model::compile() {
 	if(layers.size() < 2) {
-		throw Errors::model_compile_error("Model must have at least 2 layers.");
+		throw Errors::model_compile_error("Model must have at least 2 layers");
 	}
-	if(compiled) {
+	if(_compiled) {
 		Debug::info("Model already compiled");
 	}
 	// bind layers
@@ -25,20 +74,30 @@ void Model::compile() {
 	for(Layer* layer : layers) {
 		layer->initialize();
 	}
-	compiled = true;
-	disposed = false;
+	_compiled = true;
+	_disposed = false;
 }
 
-const char* Model::get_name() {
-	return this->name;
-}
-
-void Model::set_name(const char* name) {
-	this->name = name;
+string format_allocated_memory(unsigned long bytes) {
+	double b = (double) bytes;
+	ostringstream ss;
+	if(b > 1e9) {
+		ss << fixed << setprecision(2) << b / (1024.0 * 1024.0 * 1024.0) << " GiB";
+		return ss.str();
+	}
+	if(b > 1e6) {
+		ss << fixed << setprecision(2) << b / (1024.0 * 1024.0) << " MiB";
+		return ss.str();
+	}
+	if(b > 1e3) {
+		ss << fixed << setprecision(2) << b / 1024.0 << " KiB";
+		return ss.str();
+	}
+	return to_string(bytes) + " bytes";
 }
 
 void Model::describe() {
-	if(disposed) {
+	if(_disposed) {
 		Debug::info("Model has been disposed");
 		return;
 	}
@@ -60,14 +119,15 @@ void Model::describe() {
 		}
 		allocated_memory += sizeof(*(layers[i]->activation));
 	}
-	if(compiled) {
+	if(_compiled) {
 		allocated_memory += sizeof(double) * n_params;
 	}
 	Debug::horizontal_divider();
 	Debug::info("Model summary", true);
+	Debug::info(string(" Name: ") + _name, true);
 	Debug::info(string(" Parameters:\t\t") + to_string(n_params), true);
 	Debug::info(string(" Trainable parameters:\t") + to_string(n_trainable_params), true);
-	Debug::info(string(" Allocated memory:\t") + to_string(allocated_memory) + " bytes", true);
+	Debug::info(string(" Allocated memory:\t") + format_allocated_memory(allocated_memory), true);
 	Debug::info("", true);
 	Debug::info("Model structure", true);
 	Debug::info(string(" Layers:\t\t") + to_string(layers.size()), true);
@@ -78,8 +138,8 @@ void Model::describe() {
 }
 
 void Model::dispose() {
-	compiled = false;
-	disposed = true;
+	_compiled = false;
+	_disposed = true;
 	for(Layer* layer : layers) {
 		delete layer;
 	}

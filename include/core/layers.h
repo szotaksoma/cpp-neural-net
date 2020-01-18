@@ -19,18 +19,18 @@ namespace NeuralNet {
 			double* biases;
 			double* values;
 			LayerType type;
-			const char* name;
 			Activations::Activation* activation;
 			// Get layer name
-			const char* get_name();
-			// Set layer name
-			void set_name(const char* name);
+			const char* name();
+			// Rename layer
+			void rename(const char* name);
 			std::string describe();
 			~Layer();
 
 		protected:
 			void initialize();
 			void bind(Layer* previous, Layer* next);
+			const char* _name;
 			Layer* next = nullptr;
 			Layer* previous = nullptr;
 			bool bound = false;
@@ -47,6 +47,7 @@ namespace NeuralNet {
 	class HiddenLayer : public Layer {
 		public:
 			HiddenLayer(unsigned int size, Activations::ActivationType, const char* name = "Hidden layer");
+			HiddenLayer(unsigned int size, Activations::Activation*, const char* name = "Hidden layer");
 	};
 
 	class OutputLayer : public Layer {

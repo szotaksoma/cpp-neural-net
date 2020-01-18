@@ -34,18 +34,18 @@ void Layer::initialize() {
 }
 
 // Get layer name
-const char* Layer::get_name() {
-	return this->name;
+const char* Layer::name() {
+	return this->_name;
 }
 
 // Set layer name
-void Layer::set_name(const char* name) {
-	this->name = name;
+void Layer::rename(const char* name) {
+	this->_name = name;
 }
 
 // Get layer description
 string Layer::describe() {
-	return string(this->name) + "\t[" + to_string(this->size) + "]" + "\t" + this->activation->name;
+	return string(this->_name) + "\t[" + to_string(this->size) + "]" + "\t" + this->activation->name;
 }
 
 Layer::~Layer() {
@@ -65,9 +65,11 @@ Layer::~Layer() {
 
 InputLayer::InputLayer(unsigned int size, const char* name) {
 	type = LayerType::INPUT;
-	this->name = name;
+	this->_name = name;
 	this->activation = new Activations::Linear();
 	this->size = size;
+	this->weights = nullptr;
+	this->biases = nullptr;
 	trainable = false;
 }
 
@@ -75,9 +77,21 @@ InputLayer::InputLayer(unsigned int size, const char* name) {
 
 HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activation, const char* name) {
 	type = LayerType::HIDDEN;
-	this->name = name;
+	this->_name = name;
 	this->size = size;
 	this->activation = Activations::default_activation(activation);
+	this->weights = nullptr;
+	this->biases = nullptr;
+	trainable = true;
+}
+
+HiddenLayer::HiddenLayer(unsigned int size, Activations::Activation* activation, const char* name) {
+	type = LayerType::HIDDEN;
+	this->_name = name;
+	this->size = size;
+	this->activation = activation;
+	this->weights = nullptr;
+	this->biases = nullptr;
 	trainable = true;
 }
 
@@ -85,8 +99,10 @@ HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activati
 
 OutputLayer::OutputLayer(unsigned int size, const char* name) {
 	type = LayerType::OUTPUT;
-	this->name = name;
+	this->_name = name;
 	this->activation = new Activations::Linear();
 	this->size = size;
+	this->weights = nullptr;
+	this->biases = nullptr;
 	trainable = true;
 }
