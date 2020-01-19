@@ -51,6 +51,9 @@ string Layer::describe() {
 
 Layer::~Layer() {
 	delete activation;
+	if(values) {
+		free((void*)values);
+	}
 	if(biases) {
 		free((void*)biases);
 	}
