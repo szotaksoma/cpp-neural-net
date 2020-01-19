@@ -1,13 +1,18 @@
 #include <math.h>
 #include "core/activations.h"
 
+using namespace std;
 using namespace NeuralNet::Activations;
+
+string Activation::name() {
+	return this->_name;
+}
 
 // Linear
 
 Linear::Linear() {
 	this->type = ActivationType::LINEAR;
-	this->name = "Linear";
+	this->_name = "Linear";
 	this->m = default_m;
 }
 
@@ -28,7 +33,7 @@ double Linear::derivative(double x) {
 
 ReLU::ReLU() {
 	this->type = ActivationType::RELU;
-	this->name = "ReLU";
+	this->_name = "ReLU";
 }
 
 double ReLU::function(double x) {
@@ -43,7 +48,7 @@ double ReLU::derivative(double x) {
 
 Sigmoid::Sigmoid() {
 	this->type = ActivationType::SIGMOID;
-	this->name = "Sigmoid";
+	this->_name = "Sigmoid";
 }
 
 double Sigmoid::function(double x) {
@@ -59,7 +64,7 @@ double Sigmoid::derivative(double x) {
 
 TanH::TanH() {
 	this->type = ActivationType::TANH;
-	this->name = "TanH";
+	this->_name = "TanH";
 }
 
 double TanH::function(double x) {

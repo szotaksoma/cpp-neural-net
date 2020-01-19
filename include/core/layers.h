@@ -21,16 +21,16 @@ namespace NeuralNet {
 			LayerType type;
 			Activations::Activation* activation;
 			// Get layer name
-			const char* name();
+			std::string name();
 			// Rename layer
-			void rename(const char* name);
+			void rename(std::string name);
 			std::string describe();
 			~Layer();
 
 		protected:
 			void initialize();
 			void bind(Layer* previous, Layer* next);
-			const char* _name;
+			std::string _name;
 			Layer* next = nullptr;
 			Layer* previous = nullptr;
 			bool bound = false;
@@ -41,18 +41,18 @@ namespace NeuralNet {
 
 	class InputLayer : public Layer {
 		public:
-			InputLayer(unsigned int size, const char* name = "Input layer");
+			InputLayer(unsigned int size, std::string name = "Input layer");
 	};
 
 	class HiddenLayer : public Layer {
 		public:
-			HiddenLayer(unsigned int size, Activations::ActivationType, const char* name = "Hidden layer");
-			HiddenLayer(unsigned int size, Activations::Activation*, const char* name = "Hidden layer");
+			HiddenLayer(unsigned int size, Activations::ActivationType, std::string name = "Hidden layer");
+			HiddenLayer(unsigned int size, Activations::Activation*, std::string name = "Hidden layer");
 	};
 
 	class OutputLayer : public Layer {
 		public:
-			OutputLayer(unsigned int size, const char* name = "Output layer");
+			OutputLayer(unsigned int size, std::string name = "Output layer");
 	};
 
 }

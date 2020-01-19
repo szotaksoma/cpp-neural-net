@@ -1,4 +1,3 @@
-#include <string>
 #include <iomanip>
 #include <sstream>
 #include "core/model.h"
@@ -8,7 +7,7 @@
 using namespace NeuralNet;
 using namespace std;
 
-Model::Model(const char* name) {
+Model::Model(string name) {
 	this->_name = name;
 }
 
@@ -24,11 +23,11 @@ bool Model::is_disposed() {
 	return this->_disposed;
 }
 
-const char* Model::name() {
+string Model::name() {
 	return this->_name;
 }
 
-void Model::rename(const char* name) {
+void Model::rename(string name) {
 	this->_name = name;
 }
 
@@ -44,17 +43,17 @@ Layer* Model::get_layer(unsigned int index) {
 	if(layers.size() > index) {
 		return layers[index];
 	}
-	throw Errors::layer_does_not_exist_error(string("index '") + to_string(index).append("'"));
+	throw Errors::layer_does_not_exist_error("index '" + to_string(index) + "'");
 	return nullptr;
 }
 
-Layer* Model::get_layer(const char* name) {
+Layer* Model::get_layer(string name) {
 	for(Layer* layer : layers) {
-		if(string(layer->name()).compare(name) == 0) {
+		if(layer->name().compare(name) == 0) {
 			return layer;
 		}
 	}
-	throw Errors::layer_does_not_exist_error(string("name '").append(name).append("'"));
+	throw Errors::layer_does_not_exist_error("name '" + name + "'");
 	return nullptr;
 }
 
@@ -107,8 +106,10 @@ void Model::describe() {
 	unsigned int layer_params;
 	for(int i = 0; i < (int)layers.size(); i++) {
 		layer_params = 0;
-		// biases
+		// biases + values
 		layer_params += layers[i]->size;
+		// values (non-trainable)
+		n_params += layers[i]->size;
 		if(i > 0) {
 			// weights
 			layer_params += layers[i]->size * layers[i-1]->size;
@@ -124,15 +125,15 @@ void Model::describe() {
 	}
 	Debug::horizontal_divider();
 	Debug::info("Model summary", true);
-	Debug::info(string(" Name: ") + _name, true);
-	Debug::info(string(" Parameters:\t\t") + to_string(n_params), true);
-	Debug::info(string(" Trainable parameters:\t") + to_string(n_trainable_params), true);
-	Debug::info(string(" Allocated memory:\t") + format_allocated_memory(allocated_memory), true);
+	Debug::info(" Name: " + _name, true);
+	Debug::info(" Parameters:\t\t" + to_string(n_params), true);
+	Debug::info(" Trainable parameters:\t" + to_string(n_trainable_params), true);
+	Debug::info(" Allocated memory:\t" + format_allocated_memory(allocated_memory), true);
 	Debug::info("", true);
 	Debug::info("Model structure", true);
-	Debug::info(string(" Layers:\t\t") + to_string(layers.size()), true);
+	Debug::info(" Layers:\t\t" + to_string(layers.size()), true);
 	for(int i = 0; i < (int)layers.size(); i++) {
-		Debug::info(string("  #") + to_string(i + 1) + "\t" + layers[i]->describe(), true);
+		Debug::info("  #" + to_string(i + 1) + "\t" + layers[i]->describe(), true);
 	}
 	Debug::horizontal_divider();
 }

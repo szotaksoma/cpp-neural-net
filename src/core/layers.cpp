@@ -19,6 +19,7 @@ void Layer::initialize() {
 	if(!bound) {
 		Errors::layer_initialize_error("Unbound layer.");
 	}
+	values = (double*) calloc(size, sizeof(double));
 	if(type == LayerType::INPUT) {
 		biases = nullptr;
 		weights = nullptr;
@@ -34,18 +35,18 @@ void Layer::initialize() {
 }
 
 // Get layer name
-const char* Layer::name() {
+string Layer::name() {
 	return this->_name;
 }
 
 // Set layer name
-void Layer::rename(const char* name) {
+void Layer::rename(string name) {
 	this->_name = name;
 }
 
 // Get layer description
 string Layer::describe() {
-	return string(this->_name) + "\t[" + to_string(this->size) + "]" + "\t" + this->activation->name;
+	return this->_name + "\t[" + to_string(this->size) + "]" + "\t" + this->activation->name();
 }
 
 Layer::~Layer() {
@@ -63,7 +64,7 @@ Layer::~Layer() {
 
 // Input layer
 
-InputLayer::InputLayer(unsigned int size, const char* name) {
+InputLayer::InputLayer(unsigned int size, string name) {
 	type = LayerType::INPUT;
 	this->_name = name;
 	this->activation = new Activations::Linear();
@@ -75,7 +76,7 @@ InputLayer::InputLayer(unsigned int size, const char* name) {
 
 // Hidden layer
 
-HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activation, const char* name) {
+HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activation, string name) {
 	type = LayerType::HIDDEN;
 	this->_name = name;
 	this->size = size;
@@ -85,7 +86,7 @@ HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activati
 	trainable = true;
 }
 
-HiddenLayer::HiddenLayer(unsigned int size, Activations::Activation* activation, const char* name) {
+HiddenLayer::HiddenLayer(unsigned int size, Activations::Activation* activation, string name) {
 	type = LayerType::HIDDEN;
 	this->_name = name;
 	this->size = size;
@@ -97,7 +98,7 @@ HiddenLayer::HiddenLayer(unsigned int size, Activations::Activation* activation,
 
 // Output layer
 
-OutputLayer::OutputLayer(unsigned int size, const char* name) {
+OutputLayer::OutputLayer(unsigned int size, string name) {
 	type = LayerType::OUTPUT;
 	this->_name = name;
 	this->activation = new Activations::Linear();

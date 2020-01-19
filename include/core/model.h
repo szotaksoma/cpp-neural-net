@@ -2,6 +2,7 @@
 #define _MODEL
 
 #include "core/layers.h"
+#include <string>
 #include <vector>
 
 namespace NeuralNet {
@@ -9,14 +10,14 @@ namespace NeuralNet {
 	class Model {
 
 		public:
-			Model(const char* name = "Unnamed model");
+			Model(std::string name = "Unnamed model");
 			~Model();
 			bool is_compiled();
 			bool is_disposed();
 			// Get model name
-			const char* name();
+			std::string name();
 			// Rename model
-			void rename(const char*);
+			void rename(std::string);
 			// Print model description to console
 			void describe();
 			// Add a new layer to the model
@@ -26,7 +27,7 @@ namespace NeuralNet {
 			// Get model layer by index
 			Layer* get_layer(unsigned int index);
 			// Get model layer by name
-			Layer* get_layer(const char* name);
+			Layer* get_layer(std::string name);
 			// Compile current model structure
 			void compile();
 			// Free resources used by model
@@ -40,7 +41,7 @@ namespace NeuralNet {
 		private:
 			bool _compiled = false;
 			bool _disposed = false;
-			const char* _name;
+			std::string _name;
 
 	};
 

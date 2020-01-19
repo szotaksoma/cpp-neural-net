@@ -21,7 +21,8 @@ int main(int argc, char* argv[]) {
 	Debug::timestamp_display(true);
 
 	for(int i = 0; i < 32; i++) {
-		Model* m = new Model("Test model");
+		Debug::info("Running test #" + to_string(i + 1));
+		Model* m = new Model("Model #" + to_string(i + 1));
 		m->add_layer(new InputLayer(16));
 		for(int l = 0; l < i; l++) {
 			m->add_layer(new HiddenLayer((l+1) * 64, ActivationType::RELU));

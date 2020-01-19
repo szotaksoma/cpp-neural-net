@@ -1,6 +1,8 @@
 #ifndef _ACTIVATIONS
 #define _ACTIVATIONS
 
+#include <string>
+
 namespace NeuralNet::Activations {
 
 	enum ActivationType {
@@ -13,9 +15,11 @@ namespace NeuralNet::Activations {
 			virtual double function(double) = 0;
 			// Derivative of activation function
 			virtual double derivative(double) = 0;
-			// Description
+			// Get activation name
+			std::string name();
 			ActivationType type;
-			const char* name;
+		protected:
+			std::string _name;
 	};
 
 	class Linear : public Activation {

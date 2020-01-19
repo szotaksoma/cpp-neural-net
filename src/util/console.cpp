@@ -24,18 +24,10 @@ void show_timestamp() {
 					":" <<  setfill('0') << setw(2) << ltm->tm_sec << "] ";
 }
 
-void Debug::info(const char* message, bool hide_timestamp) {
-	info(string(message), hide_timestamp);
-}
-
 void Debug::info(string message, bool hide_timestamp) {
 	if(show_time && !hide_timestamp)
 		show_timestamp();
 	cout << message << endl;
-}
-
-void Debug::error(const char* message) {
-	error(string(message));
 }
 
 void Debug::error(string message) {
