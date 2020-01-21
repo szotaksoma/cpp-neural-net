@@ -16,6 +16,9 @@ activations_test: activations_test_o activations_o
 console_test: console_test_o console_o
 	$(CC) $(INC) -g obj/console_test.o obj/console.o -o bin/console_test
 
+data_test: data_test_o console_o
+	$(CC) $(INC) -g obj/data_test.o obj/console.o -o bin/data_test
+
 ##### Other targets #####
 
 memcheck_model_test: model_test
@@ -32,6 +35,9 @@ model_test_o: src/test/model_test.cpp
 	
 console_test_o: src/test/console_test.cpp
 	$(call compile,test,console_test)
+
+data_test_o: src/test/data_test.cpp
+	$(call compile,test,data_test)
 
 ##### Core objects #####
 

@@ -14,7 +14,7 @@
 using namespace std;
 using namespace NeuralNet;
 
-static bool show_time = false;
+static bool show_time = true;
 
 void show_timestamp() {
 	time_t now = time(0);
