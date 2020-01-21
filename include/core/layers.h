@@ -18,6 +18,8 @@ namespace NeuralNet {
 			double** weights;
 			double* biases;
 			double* values;
+			Layer* next = nullptr;
+			Layer* previous = nullptr;
 			LayerType type;
 			Activations::Activation* activation;
 			// Get layer name
@@ -31,8 +33,6 @@ namespace NeuralNet {
 			void initialize();
 			void bind(Layer* previous, Layer* next);
 			std::string _name;
-			Layer* next = nullptr;
-			Layer* previous = nullptr;
 			bool bound = false;
 
 			friend class Model;
@@ -54,6 +54,16 @@ namespace NeuralNet {
 		public:
 			OutputLayer(unsigned int size, std::string name = "Output layer");
 	};
+
+	namespace WeightInitializers {
+
+		// Initialize weights using Kaiming method (m -> layer size, n -> previous layer size)
+		void kaiming(Layer*);
+
+		// Initialize weights using Xavier (m -> layer size, n -> previous layer size)
+		void xavier(Layer*);
+
+	}
 
 }
 

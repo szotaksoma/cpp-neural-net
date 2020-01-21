@@ -9,40 +9,6 @@
 using namespace std;
 using namespace NeuralNet;
 
-// Initialize weights ["Kaiming"] (m -> layer size, n -> previous layer size)
-void kaiming_weight_init(double** &w, unsigned int m, unsigned int n);
-
-// Initialize weights ["Xavier"] (m -> layer size, n -> previous layer size)
-void xavier_weight_init(double** &w, unsigned int m, unsigned int n);
-
-void kaiming_weight_init(double** &w, unsigned int m, unsigned int n) {
-	static random_device rd{};
-	static mt19937 gen{rd()}; // TODO: decide which one of 'mt19937' and 'mt19937_64' to use as 'gen'
-	static normal_distribution<> dist{0.0, 1.0};
-	const double factor = sqrt(2.0 / (double) n);
-	w = (double**) malloc(m * sizeof(double*));
-	for(unsigned int i = 0; i < m; i++) {
-		w[i] = (double*) malloc(n * sizeof(double));
-		for(unsigned int j = 0; j < n; j++) {
-			w[i][j] = dist(gen) * factor;
-		}
-	}
-}
-
-void xavier_weight_init(double** &w, unsigned int m, unsigned int n) {
-	static random_device rd{};
-	static mt19937 gen{rd()}; // TODO: decide which one of 'mt19937' and 'mt19937_64' to use as 'gen'
-	static uniform_real_distribution<> dist{-1.0, 1.0};
-	const double factor = sqrt(6.0 / (double) (m + n));
-	w = (double**) malloc(m * sizeof(double*));
-	for(unsigned int i = 0; i < m; i++) {
-		w[i] = (double*) malloc(n * sizeof(double));
-		for(unsigned int j = 0; j < n; j++) {
-			w[i][j] = dist(gen) * factor;
-		}
-	}
-}
-
 void Layer::bind(Layer* previous, Layer* next) {
 	this->previous = previous;
 	this->next = next;
@@ -66,8 +32,12 @@ void Layer::initialize() {
 	// Allocate biases
 	biases = (double*) calloc(size, sizeof(double));
 
-	// Allocate and initialize weights
-	kaiming_weight_init(weights, size, previous->size);
+	// Allocate weights
+	weights = (double**) malloc(size * sizeof(double*));
+	for(unsigned i = 0; i < size; i++) {
+		weights[i] = (double*) malloc(previous->size * sizeof(double));
+	}
+
 }
 
 // Get layer name
@@ -139,4 +109,32 @@ OutputLayer::OutputLayer(unsigned int size, string name) {
 	this->weights = nullptr;
 	this->biases = nullptr;
 	trainable = true;
+}
+
+void WeightInitializers::kaiming(Layer* l) {
+	static random_device rd{};
+	static mt19937 gen{rd()};
+	static normal_distribution<> dist{0.0, 1.0};
+	const double factor = sqrt(2.0 / (double) l->previous->size);
+	l->weights = (double**) malloc(l->size * sizeof(double*));
+	for(unsigned i = 0; i < l->size; i++) {
+		l->weights[i] = (double*) malloc(l->previous->size * sizeof(double));
+		for(unsigned j = 0; j < l->previous->size; j++) {
+			l->weights[i][j] = dist(gen) * factor;
+		}
+	}
+}
+
+void WeightInitializers::xavier(Layer* l) {
+	static random_device rd{};
+	static mt19937 gen{rd()};
+	const double limit = sqrt(6.0 / (double) (l->size + l->previous->size));
+	static uniform_real_distribution<> dist{-limit, limit};
+	l->weights = (double**) malloc(l->size * sizeof(double*));
+	for(unsigned i = 0; i < l->size; i++) {
+		l->weights[i] = (double*) malloc(l->previous->size * sizeof(double));
+		for(unsigned j = 0; j < l->previous->size; j++) {
+			l->weights[i][j] = dist(gen);
+		}
+	}
 }
