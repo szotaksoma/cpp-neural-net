@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <math.h>
+#include <random>
 #include "core/layers.h"
 #include "core/activations.h"
 #include "util/console.h"
@@ -7,7 +9,39 @@
 using namespace std;
 using namespace NeuralNet;
 
-// Layer
+// Initialize weights ["Kaiming"] (m -> layer size, n -> previous layer size)
+void kaiming_weight_init(double** &w, unsigned int m, unsigned int n);
+
+// Initialize weights ["Xavier"] (m -> layer size, n -> previous layer size)
+void xavier_weight_init(double** &w, unsigned int m, unsigned int n);
+
+void kaiming_weight_init(double** &w, unsigned int m, unsigned int n) {
+	static random_device rd{};
+	static mt19937 gen{rd()}; // TODO: decide which one of 'mt19937' and 'mt19937_64' to use as 'gen'
+	static normal_distribution<> dist{0.0, 1.0};
+	const double factor = sqrt(2.0 / (double) n);
+	w = (double**) malloc(m * sizeof(double*));
+	for(unsigned int i = 0; i < m; i++) {
+		w[i] = (double*) malloc(n * sizeof(double));
+		for(unsigned int j = 0; j < n; j++) {
+			w[i][j] = dist(gen) * factor;
+		}
+	}
+}
+
+void xavier_weight_init(double** &w, unsigned int m, unsigned int n) {
+	static random_device rd{};
+	static mt19937 gen{rd()}; // TODO: decide which one of 'mt19937' and 'mt19937_64' to use as 'gen'
+	static uniform_real_distribution<> dist{-1.0, 1.0};
+	const double factor = sqrt(6.0 / (double) (m + n));
+	w = (double**) malloc(m * sizeof(double*));
+	for(unsigned int i = 0; i < m; i++) {
+		w[i] = (double*) malloc(n * sizeof(double));
+		for(unsigned int j = 0; j < n; j++) {
+			w[i][j] = dist(gen) * factor;
+		}
+	}
+}
 
 void Layer::bind(Layer* previous, Layer* next) {
 	this->previous = previous;
@@ -17,21 +51,23 @@ void Layer::bind(Layer* previous, Layer* next) {
 
 void Layer::initialize() {
 	if(!bound) {
-		Errors::layer_initialize_error("Unbound layer.");
+		Errors::layer_initialize_error("Unbound layer");
 	}
+
+	// Allocate values
 	values = (double*) calloc(size, sizeof(double));
+
 	if(type == LayerType::INPUT) {
 		biases = nullptr;
 		weights = nullptr;
 		return;
 	}
+
 	// Allocate biases
 	biases = (double*) calloc(size, sizeof(double));
-	// Allocate weights
-	weights = (double**) calloc(size, sizeof(double*));
-	for(unsigned int i = 0; i < size; i++) {
-		weights[i] = (double*) calloc(previous->size, sizeof(double));
-	}
+
+	// Allocate and initialize weights
+	kaiming_weight_init(weights, size, previous->size);
 }
 
 // Get layer name
@@ -65,8 +101,6 @@ Layer::~Layer() {
 	}
 }
 
-// Input layer
-
 InputLayer::InputLayer(unsigned int size, string name) {
 	type = LayerType::INPUT;
 	this->_name = name;
@@ -76,8 +110,6 @@ InputLayer::InputLayer(unsigned int size, string name) {
 	this->biases = nullptr;
 	trainable = false;
 }
-
-// Hidden layer
 
 HiddenLayer::HiddenLayer(unsigned int size, Activations::ActivationType activation, string name) {
 	type = LayerType::HIDDEN;
@@ -98,8 +130,6 @@ HiddenLayer::HiddenLayer(unsigned int size, Activations::Activation* activation,
 	this->biases = nullptr;
 	trainable = true;
 }
-
-// Output layer
 
 OutputLayer::OutputLayer(unsigned int size, string name) {
 	type = LayerType::OUTPUT;
