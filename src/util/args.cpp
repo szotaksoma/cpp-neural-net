@@ -11,5 +11,5 @@ void Args::parse(int argc, const char** argv) {
 }
 
 bool Args::have(string arg) {
-	return find(Args::args.begin(), Args::args.end(), arg) == Args::args.end();
+	return find(Args::args.begin(), Args::args.end(), arg) != Args::args.end();
 }
