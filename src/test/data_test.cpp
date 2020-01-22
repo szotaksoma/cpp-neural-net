@@ -1,13 +1,20 @@
 #include "core/data.h"
-#include "util/console.h"
+#include "util/args.h"
 
 using namespace std;
 using namespace NeuralNet;
-using namespace NeuralNet::Data;
 
 int main(int argc, const char** argv) {
-	Column<int>* c = new Column<int>("Template test");
-	Debug::info("Column name: " + c->name);
-	delete c;
+
+	Args::parse(argc, argv);
+
+	if(Args::have("--debug")) {
+		Debug::enable_debug_messages(true);
+	}
+
+	Data::Series<int>* series_a = new Data::Series<int>("Series A");
+
+	delete series_a;
 	return 0;
+
 }

@@ -15,6 +15,7 @@ using namespace std;
 using namespace NeuralNet;
 
 static bool show_time = true;
+static bool show_debug_messages = false;
 
 void show_timestamp() {
 	time_t now = time(0);
@@ -28,6 +29,14 @@ void Debug::info(string message, bool hide_timestamp) {
 	if(show_time && !hide_timestamp)
 		show_timestamp();
 	cout << message << endl;
+}
+
+void Debug::debug(string message) {
+	if(show_debug_messages) {
+		cout << STYLE_INVERSE << " D " << STYLE_RESET << " ";
+		show_timestamp();
+		cout << message << endl;
+	}
 }
 
 void Debug::error(string message) {
@@ -45,6 +54,10 @@ void Debug::horizontal_divider() {
 	cout << endl;
 }
 
-void Debug::timestamp_display(bool show) {
-	show_time = show;
+void Debug::enable_timestamp_display(bool enable) {
+	show_time = enable;
+}
+
+void Debug::enable_debug_messages(bool enable) {
+	show_debug_messages = enable;
 }

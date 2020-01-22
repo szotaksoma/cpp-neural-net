@@ -17,7 +17,7 @@ void Layer::bind(Layer* previous, Layer* next) {
 
 void Layer::initialize() {
 	if(!bound) {
-		Errors::layer_initialize_error("Unbound layer");
+		Errors::Layer::initialize_error("Unbound layer");
 	}
 
 	// Allocate values

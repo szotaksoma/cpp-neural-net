@@ -16,8 +16,8 @@ activations_test: activations_test_o activations_o
 console_test: console_test_o console_o
 	$(CC) $(INC) -g obj/console_test.o obj/console.o -o bin/console_test
 
-data_test: data_test_o console_o
-	$(CC) $(INC) -g obj/data_test.o obj/console.o -o bin/data_test
+data_test: data_test_o args_o console_o errors_o
+	$(CC) $(INC) -g obj/data_test.o obj/args.o obj/console.o obj/errors.o -o bin/data_test
 
 ##### Other targets #####
 
@@ -49,6 +49,9 @@ layers_o: src/core/layers.cpp
 
 model_o: src/core/model.cpp
 	$(call compile,core,model)
+
+args_o: src/util/args.cpp
+	$(call compile,util,args)
 
 ##### Util objects #####
 

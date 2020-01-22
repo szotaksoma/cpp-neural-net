@@ -43,7 +43,7 @@ Layer* Model::get_layer(unsigned int index) {
 	if(layers.size() > index) {
 		return layers[index];
 	}
-	throw Errors::layer_does_not_exist_error("index '" + to_string(index) + "'");
+	throw Errors::Layer::does_not_exist_error("index '" + to_string(index) + "'");
 	return nullptr;
 }
 
@@ -53,13 +53,13 @@ Layer* Model::get_layer(string name) {
 			return layer;
 		}
 	}
-	throw Errors::layer_does_not_exist_error("name '" + name + "'");
+	throw Errors::Layer::does_not_exist_error("name '" + name + "'");
 	return nullptr;
 }
 
 void Model::compile() {
 	if(layers.size() < 2) {
-		throw Errors::model_compile_error("Model must have at least 2 layers");
+		throw Errors::Model::compile_error("Model must have at least 2 layers");
 	}
 	if(_compiled) {
 		Debug::info("Model already compiled");
