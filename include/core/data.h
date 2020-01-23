@@ -4,9 +4,10 @@
 #include <string>
 #include <vector>
 #include <map>
+
 #include "util/namable.h"
 #include "util/errors.h"
-#include "util/console.h"
+#include "util/debug.h"
 
 namespace NeuralNet::Data {
 
@@ -53,7 +54,7 @@ namespace NeuralNet::Data {
 				if(data.find(series->name()) == data.end()) {
 					data[series->name()] = series;
 				} else {
-					throw Errors::Frame::already_has_key(name() + ": " + series->name());
+					Errors::Frame::already_has_key(name() + ": " + series->name());
 				}
 			}
 

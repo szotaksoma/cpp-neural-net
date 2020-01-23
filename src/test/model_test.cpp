@@ -1,7 +1,7 @@
 #include <csignal>
 #include "core/activations.h"
 #include "core/model.h"
-#include "util/console.h"
+#include "util/debug.h"
 
 using namespace std;
 using namespace NeuralNet;
@@ -15,10 +15,10 @@ void signalHandler(int sig) {
    killed = true;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, const char** argv) {
 
 	signal(SIGINT, signalHandler); 
-	Debug::enable_timestamp_display(true);
+	Debug::enable_timestamp(true);
 
 	for(int i = 0; i < 32; i++) {
 		Debug::info("Running test #" + to_string(i + 1));

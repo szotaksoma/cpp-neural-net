@@ -7,17 +7,17 @@ OCFLAGS = -Wall -c
 
 ##### Executables #####
 
-model_test: model_test_o model_o layers_o activations_o console_o errors_o
-	$(CC) $(INC) -g obj/model_test.o obj/model.o obj/layers.o obj/activations.o obj/console.o obj/errors.o -o bin/model_test
+model_test: model_test_o model_o layers_o activations_o debug_o errors_o
+	$(CC) $(INC) -g obj/model_test.o obj/model.o obj/layers.o obj/activations.o obj/debug.o obj/errors.o -o bin/model_test
 
 activations_test: activations_test_o activations_o
 	$(CC) $(INC) -g obj/activations_test.o obj/activations.o -o bin/activations_test
 
-console_test: console_test_o console_o
-	$(CC) $(INC) -g obj/console_test.o obj/console.o -o bin/console_test
+debug_test: debug_test_o debug_o args_o
+	$(CC) $(INC) -g obj/debug_test.o obj/args.o obj/debug.o -o bin/debug_test
 
-data_test: data_test_o args_o console_o errors_o
-	$(CC) $(INC) -g obj/data_test.o obj/args.o obj/console.o obj/errors.o -o bin/data_test
+data_test: data_test_o args_o debug_o errors_o
+	$(CC) $(INC) -g obj/data_test.o obj/args.o obj/debug.o obj/errors.o -o bin/data_test
 
 ##### Other targets #####
 
@@ -33,8 +33,8 @@ activations_test_o: src/test/activations_test.cpp
 model_test_o: src/test/model_test.cpp
 	$(call compile,test,model_test)
 	
-console_test_o: src/test/console_test.cpp
-	$(call compile,test,console_test)
+debug_test_o: src/test/debug_test.cpp
+	$(call compile,test,debug_test)
 
 data_test_o: src/test/data_test.cpp
 	$(call compile,test,data_test)
@@ -55,8 +55,8 @@ args_o: src/util/args.cpp
 
 ##### Util objects #####
 
-console_o: src/util/console.cpp
-	$(call compile,util,console)
+debug_o: src/util/debug.cpp
+	$(call compile,util,debug)
 
 errors_o: src/util/errors.cpp
 	$(call compile,util,errors)

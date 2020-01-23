@@ -3,7 +3,7 @@
 #include <random>
 #include "core/layers.h"
 #include "core/activations.h"
-#include "util/console.h"
+#include "util/debug.h"
 #include "util/errors.h"
 
 using namespace std;

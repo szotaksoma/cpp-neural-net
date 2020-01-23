@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
-#include "util/console.h"
+#include "util/debug.h"
 
 #define LINE_WIDTH 64
 #define STYLE_RESET "\033[0m"
@@ -14,8 +14,8 @@
 using namespace std;
 using namespace NeuralNet;
 
-static bool show_time = true;
-static bool show_debug_messages = false;
+bool Debug::debugging = false;
+bool Debug::timestamp = true;
 
 void show_timestamp() {
 	time_t now = time(0);
@@ -26,13 +26,13 @@ void show_timestamp() {
 }
 
 void Debug::info(string message, bool hide_timestamp) {
-	if(show_time && !hide_timestamp)
+	if(Debug::timestamp && !hide_timestamp)
 		show_timestamp();
 	cout << message << endl;
 }
 
 void Debug::debug(string message) {
-	if(show_debug_messages) {
+	if(Debug::debugging) {
 		cout << STYLE_INVERSE << " D " << STYLE_RESET << " ";
 		show_timestamp();
 		cout << message << endl;
@@ -41,7 +41,7 @@ void Debug::debug(string message) {
 
 void Debug::error(string message) {
 	cout << STYLE_RED_BOLD;
-	if(show_time)
+	if(Debug::timestamp)
 		show_timestamp();
 	cout << message << endl;
 	cout << STYLE_RESET;
@@ -54,10 +54,10 @@ void Debug::horizontal_divider() {
 	cout << endl;
 }
 
-void Debug::enable_timestamp_display(bool enable) {
-	show_time = enable;
+void Debug::enable_timestamp(bool enable) {
+	timestamp = enable;
 }
 
-void Debug::enable_debug_messages(bool enable) {
-	show_debug_messages = enable;
+void Debug::enable_debugging(bool enable) {
+	debugging = enable;
 }

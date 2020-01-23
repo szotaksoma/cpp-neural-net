@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <sstream>
 #include "core/model.h"
-#include "util/console.h"
+#include "util/debug.h"
 #include "util/errors.h"
 
 using namespace NeuralNet;
@@ -43,7 +43,7 @@ Layer* Model::get_layer(unsigned int index) {
 	if(layers.size() > index) {
 		return layers[index];
 	}
-	throw Errors::Layer::does_not_exist_error("index '" + to_string(index) + "'");
+	Errors::Layer::does_not_exist_error("index '" + to_string(index) + "'");
 	return nullptr;
 }
 
@@ -53,13 +53,13 @@ Layer* Model::get_layer(string name) {
 			return layer;
 		}
 	}
-	throw Errors::Layer::does_not_exist_error("name '" + name + "'");
+	Errors::Layer::does_not_exist_error("name '" + name + "'");
 	return nullptr;
 }
 
 void Model::compile() {
 	if(layers.size() < 2) {
-		throw Errors::Model::compile_error("Model must have at least 2 layers");
+		Errors::Model::compile_error("Model must have at least 2 layers");
 	}
 	if(_compiled) {
 		Debug::info("Model already compiled");

@@ -5,7 +5,7 @@
 #include <string>
 
 namespace NeuralNet::Args {
-	static std::vector<std::string> args;
+	extern std::vector<std::string> args;
 	void parse(int argc, const char** argv);
 	bool have(std::string arg);
 }
