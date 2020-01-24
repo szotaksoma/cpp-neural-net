@@ -28,6 +28,27 @@ namespace NeuralNet::Data {
 				delete this->values;
 			}
 
+			void from_array(T* values, const std::size_t length) {
+				this->values->clear();
+				for(std::size_t i = 0; i < length; i++) {
+					this->values->push_back(values[i]);
+				}
+			}
+
+			void head(std::size_t n = 10) {
+				if(values->size() < n) {
+					n = values->size();
+				}
+				Debug::horizontal_divider();
+				Debug::info("First " + std::to_string(n) + " elements of'" + name() + "'", true);
+				Debug::info("", true);
+				Debug::info("index\tvalue", true);
+				for(std::size_t i = 0; i < n; i++) {
+					Debug::info(std::to_string(i) + "\t" + std::to_string(values->at(i)), true);
+				}
+				Debug::horizontal_divider();
+			}
+
 	};
 
 	class Frame : public Namable {
