@@ -3,72 +3,48 @@ CC = g++
 # Include paths
 INC = -I ./include
 # Compilation flags
-OCFLAGS = -Wall -c
+CFLAGS = -Wall -c -g
 
-##### Executables #####
+# Tests
 
-model_test: model_test_o model_o layers_o activations_o debug_o errors_o
-	$(CC) $(INC) -g obj/model_test.o obj/model.o obj/layers.o obj/activations.o obj/debug.o obj/errors.o -o bin/model_test
+model_test: src/test/model_test.cpp NeuralNet.a
+	$(CC) $(INC) $(CFLAGS) $< -o obj/$@.o && \
+	$(CC) obj/$@.o lib/NeuralNet.a -o bin/$@
 
-activations_test: activations_test_o activations_o
-	$(CC) $(INC) -g obj/activations_test.o obj/activations.o -o bin/activations_test
+# Library
 
-debug_test: debug_test_o debug_o args_o
-	$(CC) $(INC) -g obj/debug_test.o obj/args.o obj/debug.o -o bin/debug_test
+NeuralNet.a: activations.o layers.o model.o data.o args.o debug.o errors.o
+	cd lib && ar rcs $@ $^; cd ..
 
-data_test: data_test_o debug_o errors_o
-	$(CC) $(INC) -g obj/data_test.o obj/debug.o obj/errors.o -o bin/data_test
+# Modules
 
-##### Other targets #####
+activations.o: src/core/activations.cpp include/core/activations.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-memcheck_model_test: model_test
-	$(call memcheck,model_test)
-	make clean
+layers.o: src/core/layers.cpp include/core/layers.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-##### Test objects #####
+model.o: src/core/model.cpp include/core/model.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-activations_test_o: src/test/activations_test.cpp
-	$(call compile,test,activations_test)
+data.o: include/core/data.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-model_test_o: src/test/model_test.cpp
-	$(call compile,test,model_test)
-	
-debug_test_o: src/test/debug_test.cpp
-	$(call compile,test,debug_test)
+args.o: src/util/args.cpp include/util/args.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-data_test_o: src/test/data_test.cpp
-	$(call compile,test,data_test)
+debug.o: src/util/debug.cpp include/util/debug.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
-##### Core objects #####
-
-activations_o: src/core/activations.cpp
-	$(call compile,core,activations)
-
-layers_o: src/core/layers.cpp
-	$(call compile,core,layers)
-
-model_o: src/core/model.cpp
-	$(call compile,core,model)
-
-args_o: src/util/args.cpp
-	$(call compile,util,args)
-
-##### Util objects #####
-
-debug_o: src/util/debug.cpp
-	$(call compile,util,debug)
-
-errors_o: src/util/errors.cpp
-	$(call compile,util,errors)
-
-##### Other targets and helper functions #####
+errors.o: src/util/errors.cpp include/util/errors.h
+	$(CC) $(INC) $(CFLAGS) $< -o lib/$@
 
 clean:
-	rm -f obj/*.o bin/*
+	rm -f obj/* bin/* lib/*
 
 # Usage: $1 -> group [core|util|test], $2 -> unit name (no extension)
 define compile
-	$(CC) $(INC) $(OCFLAGS) src/$1/$2.cpp -o obj/$2.o
+	$(CC) $(INC) $(CFLAGS) src/$1/$2.cpp -o obj/$2.o
 endef
 
 define memcheck
