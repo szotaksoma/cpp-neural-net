@@ -19,7 +19,7 @@ namespace NeuralNet::Data {
 		public:
 			std::vector<T>* values;
 
-			Series(std::string name = "Unnamed series") {
+			Series(std::string name) {
 				this->rename(name);
 				this->values = new std::vector<T>();
 			}
@@ -40,7 +40,7 @@ namespace NeuralNet::Data {
 					n = values->size();
 				}
 				Debug::horizontal_divider();
-				Debug::info("First " + std::to_string(n) + " elements of'" + name() + "'", true);
+				Debug::info("First " + std::to_string(n) + " elements of '" + name() + "'", true);
 				Debug::info("", true);
 				Debug::info("index\tvalue", true);
 				for(std::size_t i = 0; i < n; i++) {

@@ -1,7 +1,5 @@
 #include <csignal>
-#include "core/activations.h"
-#include "core/model.h"
-#include "util/debug.h"
+#include "NeuralNet.h"
 
 using namespace std;
 using namespace NeuralNet;

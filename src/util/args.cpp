@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "util/args.h"
+#include "NeuralNet.h"
 
 using namespace std;
 using namespace NeuralNet;
