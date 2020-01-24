@@ -20,13 +20,11 @@ namespace NeuralNet::Data {
 			std::vector<T>* values;
 
 			Series(std::string name = "Unnamed series") {
-				Debug::debug("Creating series '" + name + "'");
 				this->rename(name);
 				this->values = new std::vector<T>();
 			}
 
 			~Series() {
-				Debug::debug("Deleting series '" + name() + "'");
 				delete this->values;
 			}
 
@@ -38,19 +36,16 @@ namespace NeuralNet::Data {
 			std::map<std::string, ISeries*> data;
 
 			Frame(std::string name = "Unnamed frame") {
-				Debug::debug("Deleting frame '" + name + "'");
 				this->rename(name);
 			}
 
 			~Frame() {
-				Debug::debug("Destroying frame '" + name() + "'");
 				for(std::pair<std::string, ISeries*> p : data) {
 					delete p.second;
 				}
 			}
 
 			void add(ISeries* series) {
-				Debug::debug("Adding sereies '" + series->name() + "' to frame '" + name() + "'");
 				if(data.find(series->name()) == data.end()) {
 					data[series->name()] = series;
 				} else {

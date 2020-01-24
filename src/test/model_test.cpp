@@ -18,7 +18,6 @@ void signalHandler(int sig) {
 int main(int argc, const char** argv) {
 
 	signal(SIGINT, signalHandler); 
-	Debug::enable_timestamp(true);
 
 	for(int i = 0; i < 32; i++) {
 		Debug::info("Running test #" + to_string(i + 1));

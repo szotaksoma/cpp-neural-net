@@ -14,34 +14,23 @@
 using namespace std;
 using namespace NeuralNet;
 
-bool Debug::debugging = false;
-bool Debug::timestamp = true;
+// Namespace globals
+bool Debug::_suppress_errors = false;
+bool Debug::_timestamp = true;
 
-void show_timestamp() {
-	time_t now = time(0);
-	tm* ltm = localtime(&now);
-	cout << "[" << setfill('0') << setw(2) << ltm->tm_hour <<
-					":" << setfill('0') << setw(2) << ltm->tm_min <<
-					":" <<  setfill('0') << setw(2) << ltm->tm_sec << "] ";
-}
+// Local declarations
+void show_timestamp();
 
+// Library functions
 void Debug::info(string message, bool hide_timestamp) {
-	if(Debug::timestamp && !hide_timestamp)
+	if(_timestamp && !hide_timestamp)
 		show_timestamp();
 	cout << message << endl;
 }
 
-void Debug::debug(string message) {
-	if(Debug::debugging) {
-		cout << STYLE_INVERSE << " D " << STYLE_RESET << " ";
-		show_timestamp();
-		cout << message << endl;
-	}
-}
-
 void Debug::error(string message) {
 	cout << STYLE_RED_BOLD;
-	if(Debug::timestamp)
+	if(_timestamp)
 		show_timestamp();
 	cout << message << endl;
 	cout << STYLE_RESET;
@@ -55,9 +44,18 @@ void Debug::horizontal_divider() {
 }
 
 void Debug::enable_timestamp(bool enable) {
-	timestamp = enable;
+	_timestamp = enable;
 }
 
-void Debug::enable_debugging(bool enable) {
-	debugging = enable;
+void Debug::suppress_errors(bool enable) {
+	_suppress_errors = enable;
+}
+
+// Local functions
+void show_timestamp() {
+	time_t now = time(0);
+	tm* ltm = localtime(&now);
+	cout << "[" << setfill('0') << setw(2) << ltm->tm_hour <<
+					":" << setfill('0') << setw(2) << ltm->tm_min <<
+					":" <<  setfill('0') << setw(2) << ltm->tm_sec << "] ";
 }

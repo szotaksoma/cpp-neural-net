@@ -2,7 +2,7 @@
 #include "util/debug.h"
 #include "util/errors.h"
 
-#define CONDITIONAL_THROW if (Debug::debugging) throw
+#define CONDITIONAL_THROW if (!Debug::_suppress_errors) throw
 
 using namespace std;
 using namespace NeuralNet;

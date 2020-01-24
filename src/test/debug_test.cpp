@@ -7,10 +7,9 @@ using namespace NeuralNet;
 int main(int argc, const char** argv) {
 
 	Args::parse(argc, argv);
-	if(Args::have("--debug"))
-		Debug::enable_debugging(true);
 
-	Debug::debug("Debug message");
+	if(Args::have("--debug"))
+		Debug::suppress_errors(false);
 
 	// Default behaviour
 	Debug::info("Some debug informaton.");

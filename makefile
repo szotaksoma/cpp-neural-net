@@ -16,8 +16,8 @@ activations_test: activations_test_o activations_o
 debug_test: debug_test_o debug_o args_o
 	$(CC) $(INC) -g obj/debug_test.o obj/args.o obj/debug.o -o bin/debug_test
 
-data_test: data_test_o args_o debug_o errors_o
-	$(CC) $(INC) -g obj/data_test.o obj/args.o obj/debug.o obj/errors.o -o bin/data_test
+data_test: data_test_o debug_o errors_o
+	$(CC) $(INC) -g obj/data_test.o obj/debug.o obj/errors.o -o bin/data_test
 
 ##### Other targets #####
 
