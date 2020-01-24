@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
-#include "util/debug.h"
+#include "NeuralNet.h"
 
 #define LINE_WIDTH 64
 #define STYLE_RESET "\033[0m"

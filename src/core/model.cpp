@@ -1,8 +1,6 @@
 #include <iomanip>
 #include <sstream>
-#include "core/model.h"
-#include "util/debug.h"
-#include "util/errors.h"
+#include "NeuralNet.h"
 
 using namespace NeuralNet;
 using namespace std;

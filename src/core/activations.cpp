@@ -1,5 +1,5 @@
 #include <math.h>
-#include "core/activations.h"
+#include "NeuralNet.h"
 
 using namespace std;
 using namespace NeuralNet::Activations;

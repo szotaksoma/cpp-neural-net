@@ -1,10 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <random>
-#include "core/layers.h"
-#include "core/activations.h"
-#include "util/debug.h"
-#include "util/errors.h"
+#include "NeuralNet.h"
 
 using namespace std;
 using namespace NeuralNet;

@@ -1,6 +1,5 @@
 #include <string>
-#include "util/debug.h"
-#include "util/errors.h"
+#include "NeuralNet.h"
 
 #define CONDITIONAL_THROW if (!Debug::_suppress_errors) throw
 
