@@ -17,6 +17,7 @@ namespace NeuralNet::Activations {
 			virtual double derivative(double) = 0;
 			// Get activation name
 			std::string name();
+			virtual ~Activation() = default;
 			ActivationType type;
 		protected:
 			std::string _name;

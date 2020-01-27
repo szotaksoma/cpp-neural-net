@@ -7,11 +7,15 @@ CFLAGS = -Wall -c -g
 
 # Tests
 
+data_test: src/test/data_test.cpp NeuralNet.a
+	$(CC) $(INC) $(CFLAGS) $< -o bin/$@.o && \
+	$(CC) bin/$@.o -Lbin/static -l:NeuralNet.a -o bin/$@ && \
+	make clean-o && $(call success,"Build successful!")
+
 model_test: src/test/model_test.cpp NeuralNet.a
 	$(CC) $(INC) $(CFLAGS) $< -o bin/$@.o && \
 	$(CC) bin/$@.o -Lbin/static -l:NeuralNet.a -o bin/$@ && \
-	make clean-o && \
-	$(call success,"Build successful!")
+	make clean-o && $(call success,"Build successful!")
 
 # Library
 
@@ -29,7 +33,7 @@ layers.o: src/core/layers.cpp include/core/layers.h
 model.o: src/core/model.cpp include/core/model.h
 	$(CC) $(INC) $(CFLAGS) $< -o bin/static/$@
 
-data.o: include/core/data.h
+data.o: src/core/data.cpp include/core/data.h
 	$(CC) $(INC) $(CFLAGS) $< -o bin/static/$@
 
 args.o: src/util/args.cpp include/util/args.h

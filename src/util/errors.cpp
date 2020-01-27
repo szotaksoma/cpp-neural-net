@@ -33,3 +33,17 @@ void Errors::Frame::already_has_key(string message) {
 
 	CONDITIONAL_THROW runtime_error(out);
 }
+
+void Errors::Frame::does_not_have_key(string message) {
+	string out = "Frame does not have key: " + message;
+	Debug::error(out);
+
+	CONDITIONAL_THROW runtime_error(out);
+}
+
+void Errors::Series::index_out_of_range(string message) {
+	string out = "Series index out of range: " + message;
+	Debug::error(out);
+
+	CONDITIONAL_THROW runtime_error(out);
+}

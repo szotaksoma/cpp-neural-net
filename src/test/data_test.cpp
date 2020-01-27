@@ -6,17 +6,22 @@ using namespace NeuralNet::Data;
 
 int main(int argc, const char** argv) {
 
-	int even[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+	Args::parse(argc, argv);
+	if(Args::have("--no-errors")) {
+		Debug::suppress_errors(true);
+	}
 
-	Series<int>* series_a = new Series<int>("even");
-	series_a->from_array(even, sizeof(even)/sizeof(even[0]));
+	double numbers[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
 
-	series_a->head();
-	series_a->head(2);
-	series_a->head(20);
-	series_a->head(0);
+	Series series = Series("numbers");
+	series.from_array(numbers, sizeof(numbers)/sizeof(numbers[0]));
 
-	delete series_a;
+	Frame df;
+	df.add(series);
+
+	df["numbers"].head();
+	Debug::info(to_string(df["numbers"][2]));
+
 	return 0;
 
 }

@@ -11,68 +11,30 @@
 
 namespace NeuralNet::Data {
 
-	class ISeries : public Namable {};
-
-	template <typename T>
-	class Series : public ISeries {
+	class Series : public Namable {
 
 		public:
-			std::vector<T>* values;
+			std::vector<double>* values;
 
-			Series(std::string name) {
-				this->rename(name);
-				this->values = new std::vector<T>();
-			}
+			Series(std::string name);
+			~Series();
 
-			~Series() {
-				delete this->values;
-			}
-
-			void from_array(T* values, const std::size_t length) {
-				this->values->clear();
-				for(std::size_t i = 0; i < length; i++) {
-					this->values->push_back(values[i]);
-				}
-			}
-
-			void head(std::size_t n = 10) {
-				if(values->size() < n) {
-					n = values->size();
-				}
-				Debug::horizontal_divider();
-				Debug::info("First " + std::to_string(n) + " elements of '" + name() + "'", true);
-				Debug::info("", true);
-				Debug::info("index\tvalue", true);
-				for(std::size_t i = 0; i < n; i++) {
-					Debug::info(std::to_string(i) + "\t" + std::to_string(values->at(i)), true);
-				}
-				Debug::horizontal_divider();
-			}
+			double operator[](std::size_t index);
+			void from_array(double* values, const std::size_t length);
+			void head(std::size_t n = 10);
 
 	};
 
 	class Frame : public Namable {
 		
 		public:
-			std::map<std::string, ISeries*> data;
+			std::map<std::string, Series> data;
 
-			Frame(std::string name = "Unnamed frame") {
-				this->rename(name);
-			}
-
-			~Frame() {
-				for(std::pair<std::string, ISeries*> p : data) {
-					delete p.second;
-				}
-			}
-
-			void add(ISeries* series) {
-				if(data.find(series->name()) == data.end()) {
-					data[series->name()] = series;
-				} else {
-					Errors::Frame::already_has_key(name() + ": " + series->name());
-				}
-			}
+			Frame(std::string name = "Unnamed frame");
+			~Frame();
+			
+			void add(Series series);
+			Series operator[] (std::string key);
 
 	};
 
