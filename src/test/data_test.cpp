@@ -15,6 +15,7 @@ int main(int argc, const char** argv) {
 
 	Series series = Series("numbers");
 	series.from_array(numbers, sizeof(numbers)/sizeof(numbers[0]));
+	series.head();
 
 	Frame df;
 	df.add(series);

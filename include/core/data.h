@@ -14,10 +14,9 @@ namespace NeuralNet::Data {
 	class Series : public Namable {
 
 		public:
-			std::vector<double>* values;
+			std::vector<double> values;
 
 			Series(std::string name);
-			~Series();
 
 			double operator[](std::size_t index);
 			void from_array(double* values, const std::size_t length);
@@ -31,7 +30,6 @@ namespace NeuralNet::Data {
 			std::map<std::string, Series> data;
 
 			Frame(std::string name = "Unnamed frame");
-			~Frame();
 			
 			void add(Series series);
 			Series operator[] (std::string key);
