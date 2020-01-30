@@ -24,6 +24,10 @@ void Series::from_array(double* values, const size_t length) {
 	}
 }
 
+void Series::from_vector(vector<double> &vector) {
+	this->values = vector;
+}
+
 void Series::head(size_t n) {
 	if(values.size() < n) {
 		n = values.size();
@@ -38,6 +42,9 @@ void Series::head(size_t n) {
 	Debug::horizontal_divider();
 }
 
+tuple<size_t, size_t> Series::size() {
+	return tuple<size_t, size_t>(values.size(), 1ul);
+}
 
 Frame::Frame(string name) {
 	this->rename(name);
@@ -58,4 +65,9 @@ Series Frame::operator[] (string key) {
 		return Series("");
 		Errors::Frame::does_not_have_key(name() + ": " + key);
 	}
+}
+
+tuple<size_t, size_t> Frame::size() {
+	const size_t row_count = get<0>(data.begin()->second.size());
+	return tuple<size_t, size_t>(row_count, data.size());
 }

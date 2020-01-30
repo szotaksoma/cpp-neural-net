@@ -1,8 +1,18 @@
 #include "NeuralNet.h"
+#define SERIES_SIZE 1000
 
 using namespace std;
 using namespace NeuralNet;
 using namespace NeuralNet::Data;
+
+// Fill vector 'v' with 'size' multiples of 'step'
+void fill_vector(vector<double> &v, double step, size_t size) {
+	v.clear();
+	v.resize(size);
+	for(size_t i = 0; i < size; i++) {
+		v[i] = (double)(i + 1) * step;
+	}
+}
 
 int main(int argc, const char** argv) {
 
@@ -11,22 +21,24 @@ int main(int argc, const char** argv) {
 		Debug::suppress_errors(true);
 	}
 
-	double twos[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-	double threes[] = {3, 6, 9, 12, 15, 18, 21, 24, 27, 30};
+	vector<double> twos;
+	vector<double> threes;
+	fill_vector(twos, 2.0, SERIES_SIZE);
+	fill_vector(threes, 3.0, SERIES_SIZE);
 
-	Series s1 = Series("2's multiples");
-	Series s2 = Series("3's multiples");
+	Series s1 = Series("2_multi");
+	Series s2 = Series("3_multi");
 
-	s1.from_array(twos, sizeof(twos) / sizeof(twos[0]));
-	s2.from_array(threes, sizeof(threes) / sizeof(threes[0]));
+	s1.from_vector(twos);
+	s2.from_vector(threes);
 
 	Frame df;
 	df.add(s1);
 	df.add(s2);
 
-	df["2's multiples"].head();
-	df["3's multiples"].head();
-	Debug::info(to_string(df["2's multiples"][5]));
+	df["2_multi"].head(200);
+	df["3_multi"].head(200);
+	Debug::info(to_string(df["2_multi"][5]));
 
 	return 0;
 

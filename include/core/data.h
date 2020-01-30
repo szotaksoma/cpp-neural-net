@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <tuple>
 
 #include "util/namable.h"
 #include "util/errors.h"
@@ -20,7 +21,9 @@ namespace NeuralNet::Data {
 
 			double operator[](std::size_t index);
 			void from_array(double* values, const std::size_t length);
+			void from_vector(std::vector<double> &vector);
 			void head(std::size_t n = 10);
+			std::tuple<std::size_t, std::size_t> size();
 
 	};
 
@@ -33,6 +36,8 @@ namespace NeuralNet::Data {
 			
 			void add(Series series);
 			Series operator[] (std::string key);
+			void head(std::size_t n = 10);
+			std::tuple<std::size_t, std::size_t> size();
 
 	};
 

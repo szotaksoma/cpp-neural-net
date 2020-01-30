@@ -1,2 +1,10 @@
+# Use 'make dirs' to recreate ignored directory trees
+
 bin/
 bin/static/
+
+diff/
+diff/src/
+diff/src/core/
+diff/src/test/
+diff/src/util/
