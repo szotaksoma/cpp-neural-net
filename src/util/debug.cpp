@@ -1,10 +1,12 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <sstream>
 #include "NeuralNet.h"
 
 #define LINE_WIDTH 64
 #define STYLE_RESET "\033[0m"
+#define STYLE_BOLD "\033[1m"
 #define STYLE_INVERSE "\033[7m"
 #define STYLE_RED "\033[31m"
 #define STYLE_YELLOW "\033[33m"
@@ -41,6 +43,20 @@ void Debug::horizontal_divider() {
 		cout << "-";
 	}
 	cout << endl;
+}
+
+string Debug::to_fixed(double n, unsigned length) {
+	ostringstream s;
+	s << fixed << setprecision(length) << n;
+	return s.str();
+}
+
+void Debug::set_style_bold() {
+	cout << STYLE_BOLD;
+}
+
+void Debug::reset_style() {
+	cout << STYLE_RESET;
 }
 
 void Debug::enable_timestamp(bool enable) {

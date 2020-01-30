@@ -71,7 +71,9 @@ dirs:
 
 define diff_compile
 	[ ! -s bin/static/$1 -o ! -s diff/$2 -o "`diff $2 diff/$2`" ] \
-	&& (echo "\e[33mCompiling $2\e[0m" && cp $2 diff/$2 && $(CC) $(INC) $(CFLAGS) $2 -o bin/static/$1) \
+	  && (echo "\e[33mCompiling $2\e[0m" \
+	  && cp $2 diff/$2 \
+	  && $(CC) $(INC) $(CFLAGS) $2 -o bin/static/$1) \
 	|| echo "\e[37mSkipping $2 (up to date)\e[0m"
 endef
 

@@ -23,22 +23,27 @@ int main(int argc, const char** argv) {
 
 	vector<double> twos;
 	vector<double> threes;
+	vector<double> fives;
 	fill_vector(twos, 2.0, SERIES_SIZE);
 	fill_vector(threes, 3.0, SERIES_SIZE);
+	fill_vector(fives, 5.0, SERIES_SIZE);
 
-	Series s1 = Series("2_multi");
-	Series s2 = Series("3_multi");
+	Series s1 = Series("2s");
+	Series s2 = Series("3s");
+	Series s3 = Series("5s");
 
 	s1.from_vector(twos);
 	s2.from_vector(threes);
+	s3.from_vector(fives);
 
-	Frame df;
+	Frame df = Frame("numbers");
 	df.add(s1);
 	df.add(s2);
+	df.add(s3);
 
-	df["2_multi"].head(200);
-	df["3_multi"].head(200);
-	Debug::info(to_string(df["2_multi"][5]));
+	Debug::info(to_string(df["2s"][5]));
+	df["3s"].head();
+	df.head();
 
 	return 0;
 

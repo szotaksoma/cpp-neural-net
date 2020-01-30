@@ -4,7 +4,6 @@ using namespace std;
 using namespace NeuralNet::Data;
 
 Series::Series(string name) {
-	Debug::info("Series ctor called: " + this->name());
 	this->rename(name);
 }
 
@@ -35,9 +34,11 @@ void Series::head(size_t n) {
 	Debug::horizontal_divider();
 	Debug::info("First " + std::to_string(n) + " elements of '" + name() + "'", true);
 	Debug::info("", true);
+	Debug::set_style_bold();
 	Debug::info("index\tvalue", true);
+	Debug::reset_style();
 	for(size_t i = 0; i < n; i++) {
-		Debug::info(to_string(i) + "\t" + to_string(values[i]), true);
+		Debug::info(to_string(i) + "\t" + Debug::to_fixed(values[i]), true);
 	}
 	Debug::horizontal_divider();
 }
@@ -65,6 +66,31 @@ Series Frame::operator[] (string key) {
 		return Series("");
 		Errors::Frame::does_not_have_key(name() + ": " + key);
 	}
+}
+
+void Frame::head(size_t n) {
+	if(get<0>(data.begin()->second.size()) < n) {
+		n = get<0>(data.begin()->second.size());
+	}
+	Debug::horizontal_divider();
+	Debug::info("First " + std::to_string(n) + " rows of '" + name() + "'", true);
+	Debug::info("", true);
+	string header = "index";
+	for(pair<string, Series> p : data) {
+		header += "\t" + p.second.name();
+	}
+	Debug::set_style_bold();
+	Debug::info(header, true);
+	Debug::reset_style();
+	string row;
+	for(size_t i = 0; i < n; i++) {
+		row = to_string(i);
+		for(pair<string, Series> p : data) {
+			row += "\t"+ Debug::to_fixed(p.second[i]);
+		}
+		Debug::info(row, true);
+	}
+	Debug::horizontal_divider();
 }
 
 tuple<size_t, size_t> Frame::size() {

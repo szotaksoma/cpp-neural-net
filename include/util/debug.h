@@ -6,6 +6,7 @@
 namespace NeuralNet::Debug {
 	
 	void info(std::string, bool hide_timestamp = false);
+
 	void error(std::string);
 	void horizontal_divider();
 
@@ -14,6 +15,10 @@ namespace NeuralNet::Debug {
 
 	// Suppress exceptions (only write to console)
 	void suppress_errors(bool);
+
+	std::string to_fixed(double, unsigned length = 2);
+	void set_style_bold();
+	void reset_style();
 
 	extern bool _suppress_errors;
 	extern bool _timestamp;
