@@ -13,6 +13,20 @@ void Errors::Model::compile_error(string message) {
 	CONDITIONAL_THROW runtime_error(out);
 }
 
+void Errors::Model::not_compiled(string message) {
+	string out = "Model is not compiled: " + message;
+	Debug::error(out);
+
+	CONDITIONAL_THROW runtime_error(out);
+}
+
+void Errors::Model::unmatching_dimensions(string message) {
+	string out = "Data dimensionality does not match input layer: " + message;
+	Debug::error(out);
+
+	CONDITIONAL_THROW runtime_error(out);
+}
+
 void Errors::Layer::initialize_error(string message) {
 	string out = "Layer initialization failed: " + message;
 	Debug::error(out);

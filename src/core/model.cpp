@@ -46,6 +46,36 @@ Layer* Model::get_layer(string name) {
 	return nullptr;
 }
 
+Layer* Model::get_input() {
+	if(!layers.empty() && layers[0]->type == LayerType::INPUT) {
+		return layers[0];
+	} else {
+		return nullptr;
+	}
+}
+
+Layer* Model::get_output() {
+	if(!layers.empty() && layers[layers.size() - 1]->type == LayerType::OUTPUT) {
+		return layers[layers.size() - 1];
+	}
+	return nullptr;
+}
+
+void Model::feed_forward(vector<double> iv) {
+	if(!_compiled) {
+		Errors::Model::not_compiled("Cannot feed data through '" + name() + "'");
+	}
+	Layer* input_layer = get_input();
+	if(iv.size() != input_layer->size) {
+		Errors::Model::unmatching_dimensions(input_layer->name() + "(" + to_string(input_layer->size) + ") <--> data (" + to_string(iv.size()) + ")");
+		return;
+	}
+	for(size_t i = 0; i < input_layer->size; i++) {
+		input_layer->values[i] = iv[i];
+	}
+	
+}
+
 void Model::compile() {
 	if(layers.size() < 2) {
 		Errors::Model::compile_error("Model must have at least 2 layers");
