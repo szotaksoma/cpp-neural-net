@@ -66,22 +66,6 @@ void Model::compile() {
 	_disposed = false;
 }
 
-
-
-string format_allocated_memory_string(unsigned long bytes) {
-	double b = (double) bytes;
-	if(b > 1e9) {
-		return Debug::to_fixed(b / (1024.0 * 1024.0 * 1024.0)) + " GiB";
-	}
-	if(b > 1e6) {
-		return Debug::to_fixed(b / (1024.0 * 1024.0)) + " MiB";
-	}
-	if(b > 1e3) {
-		return Debug::to_fixed(b / 1024.0) + " KiB";
-	}
-	return to_string(bytes) + " bytes";
-}
-
 void Model::describe() {
 	if(_disposed) {
 		Debug::info("Model has been disposed");
@@ -115,7 +99,7 @@ void Model::describe() {
 	Debug::info(" Name: " + name(), true);
 	Debug::info(" Parameters:\t\t" + to_string(n_params), true);
 	Debug::info(" Trainable parameters:\t" + to_string(n_trainable_params), true);
-	Debug::info(" Allocated memory:\t" + format_allocated_memory_string(allocated_memory), true);
+	Debug::info(" Allocated memory:\t" + Debug::pretty_memory(allocated_memory), true);
 	Debug::info("", true);
 	Debug::info("Model structure", true);
 	Debug::info(" Layers:\t\t" + to_string(layers.size()), true);

@@ -51,6 +51,18 @@ string Debug::to_fixed(double n, unsigned length) {
 	return s.str();
 }
 
+string Debug::pretty_memory(unsigned long bytes) {
+	double b = (double) bytes;
+	if(b > 1e9) {
+		return to_fixed(b / (1024.0 * 1024.0 * 1024.0)) + " GiB";
+	} else if(b > 1e6) {
+		return to_fixed(b / (1024.0 * 1024.0)) + " MiB";
+	} else if(b > 1e3) {
+		return to_fixed(b / 1024.0) + " KiB";
+	}
+	return to_string(bytes) + " bytes";
+}
+
 void Debug::set_style_bold() {
 	cout << STYLE_BOLD;
 }

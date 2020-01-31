@@ -17,6 +17,7 @@ namespace NeuralNet::Debug {
 	void suppress_errors(bool);
 
 	std::string to_fixed(double, unsigned length = 2);
+	std::string pretty_memory(unsigned long bytes);
 	void set_style_bold();
 	void reset_style();
 
