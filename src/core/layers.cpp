@@ -35,6 +35,8 @@ void Layer::initialize() {
 		weights[i] = (double*) malloc(previous->size * sizeof(double));
 	}
 
+	WeightInitializers::kaiming(this);
+
 }
 
 // Get layer name

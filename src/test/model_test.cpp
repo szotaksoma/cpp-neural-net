@@ -17,7 +17,7 @@ int main(int argc, const char** argv) {
 
 	signal(SIGINT, signalHandler); 
 
-	for(int i = 0; i < 32; i++) {
+	for(int i = 0; i < 16; i++) {
 		Debug::info("Running test #" + to_string(i + 1));
 		Model* m = new Model("Model #" + to_string(i + 1));
 		m->add_layer(new InputLayer(16));

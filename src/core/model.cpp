@@ -1,12 +1,11 @@
 #include <iomanip>
-#include <sstream>
 #include "NeuralNet.h"
 
 using namespace NeuralNet;
 using namespace std;
 
 Model::Model(string name) {
-	this->_name = name;
+	this->rename(name);
 }
 
 Model::~Model() {
@@ -19,14 +18,6 @@ bool Model::is_compiled() {
 
 bool Model::is_disposed() {
 	return this->_disposed;
-}
-
-string Model::name() {
-	return this->_name;
-}
-
-void Model::rename(string name) {
-	this->_name = name;
 }
 
 void Model::add_layer(Layer* layer) {
@@ -75,20 +66,18 @@ void Model::compile() {
 	_disposed = false;
 }
 
-string format_allocated_memory(unsigned long bytes) {
+
+
+string format_allocated_memory_string(unsigned long bytes) {
 	double b = (double) bytes;
-	ostringstream ss;
 	if(b > 1e9) {
-		ss << fixed << setprecision(2) << b / (1024.0 * 1024.0 * 1024.0) << " GiB";
-		return ss.str();
+		return Debug::to_fixed(b / (1024.0 * 1024.0 * 1024.0)) + " GiB";
 	}
 	if(b > 1e6) {
-		ss << fixed << setprecision(2) << b / (1024.0 * 1024.0) << " MiB";
-		return ss.str();
+		return Debug::to_fixed(b / (1024.0 * 1024.0)) + " MiB";
 	}
 	if(b > 1e3) {
-		ss << fixed << setprecision(2) << b / 1024.0 << " KiB";
-		return ss.str();
+		return Debug::to_fixed(b / 1024.0) + " KiB";
 	}
 	return to_string(bytes) + " bytes";
 }
@@ -123,10 +112,10 @@ void Model::describe() {
 	}
 	Debug::horizontal_divider();
 	Debug::info("Model summary", true);
-	Debug::info(" Name: " + _name, true);
+	Debug::info(" Name: " + name(), true);
 	Debug::info(" Parameters:\t\t" + to_string(n_params), true);
 	Debug::info(" Trainable parameters:\t" + to_string(n_trainable_params), true);
-	Debug::info(" Allocated memory:\t" + format_allocated_memory(allocated_memory), true);
+	Debug::info(" Allocated memory:\t" + format_allocated_memory_string(allocated_memory), true);
 	Debug::info("", true);
 	Debug::info("Model structure", true);
 	Debug::info(" Layers:\t\t" + to_string(layers.size()), true);

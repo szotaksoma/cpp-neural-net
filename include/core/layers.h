@@ -60,7 +60,7 @@ namespace NeuralNet {
 		// Initialize weights using Kaiming method (m -> layer size, n -> previous layer size)
 		void kaiming(Layer*);
 
-		// Initialize weights using Xavier (m -> layer size, n -> previous layer size)
+		// Initialize weights using Xavier method (m -> layer size, n -> previous layer size)
 		void xavier(Layer*);
 
 	}
