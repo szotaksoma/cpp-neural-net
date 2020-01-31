@@ -41,9 +41,14 @@ int main(int argc, const char** argv) {
 	df.add(s2);
 	df.add(s3);
 
+	Debug::info("Direct access");
 	Debug::info(to_string(df["2s"][5]));
+	Debug::info("Series::head()");
 	df["3s"].head();
+	Debug::info("Frame::head()");
 	df.head();
+	Debug::info("Frame::size()");
+	Debug::info(to_string(get<0>(df.size())) + ", " + to_string(get<1>(df.size())));
 
 	return 0;
 

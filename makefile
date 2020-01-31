@@ -24,7 +24,7 @@ debug_test: src/test/debug_test.cpp NeuralNet.a
 
 # Library
 
-NeuralNet.a: activations.o layers.o model.o data.o args.o debug.o errors.o
+NeuralNet.a: activations.o layers.o model.o data_series.o data_frame.o args.o debug.o errors.o
 	@echo "\e[33mPacking library ($@)\e[0m"; \
 	cd bin/static && ar rcs $@ $^; cd ../..
 
@@ -39,7 +39,10 @@ layers.o: src/core/layers.cpp include/core/layers.h
 model.o: src/core/model.cpp include/core/model.h
 	@$(call diff_compile,$@,$<)
 
-data.o: src/core/data.cpp include/core/data.h
+data_series.o: src/core/data_series.cpp include/core/data.h
+	@$(call diff_compile,$@,$<)
+
+data_frame.o: src/core/data_frame.cpp include/core/data.h
 	@$(call diff_compile,$@,$<)
 
 args.o: src/util/args.cpp include/util/args.h

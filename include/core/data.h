@@ -39,6 +39,8 @@ namespace NeuralNet::Data {
 			void head(std::size_t n = 10);
 			std::tuple<std::size_t, std::size_t> size();
 
+		private:
+			std::size_t row_count = 0;
 	};
 
 }
