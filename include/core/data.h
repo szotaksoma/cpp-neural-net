@@ -15,8 +15,6 @@ namespace NeuralNet::Data {
 	class Series : public Namable {
 
 		public:
-			std::vector<double> values;
-
 			Series(std::string name);
 
 			double operator[](std::size_t index);
@@ -24,6 +22,10 @@ namespace NeuralNet::Data {
 			void from_vector(std::vector<double> &vector);
 			void head(std::size_t n = 10);
 			std::tuple<std::size_t, std::size_t> size();
+
+		protected:
+			std::vector<double> values;
+			friend class Frame;
 
 	};
 
@@ -36,11 +38,15 @@ namespace NeuralNet::Data {
 			
 			void add(Series series);
 			Series operator[] (std::string key);
+			std::vector<double> row(std::size_t index);
+			std::vector<double> next_row();
+			void reset_row_index();
 			void head(std::size_t n = 10);
 			std::tuple<std::size_t, std::size_t> size();
 
 		private:
 			std::size_t row_count = 0;
+			std::size_t index = 0;
 	};
 
 }

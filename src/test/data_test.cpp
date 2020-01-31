@@ -1,5 +1,5 @@
 #include "NeuralNet.h"
-#define SERIES_SIZE 1000
+#define SERIES_SIZE 20
 
 using namespace std;
 using namespace NeuralNet;
@@ -49,7 +49,17 @@ int main(int argc, const char** argv) {
 	df.head();
 	Debug::info("Frame::size()");
 	Debug::info(to_string(get<0>(df.size())) + ", " + to_string(get<1>(df.size())));
-
+	Debug::info("Frame::next_row()");
+	vector<double> row;
+	string row_string;
+	for(int i = 0; i < 25; i++) {
+		row = df.next_row();
+		row_string = "Row #" + to_string(i) + ": ";
+		for(double d : row) {
+			row_string += "\t" + Debug::to_fixed(d);
+		}
+		Debug::info(row_string, true);
+	}
 	return 0;
 
 }

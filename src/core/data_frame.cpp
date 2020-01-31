@@ -25,6 +25,27 @@ Series Frame::operator[] (string key) {
 	}
 }
 
+vector<double> Frame::row(size_t index) {
+	vector<double> r;
+	for(pair<string, Series> p : data) {
+		r.push_back(p.second[index]);
+	}
+	return r;
+}
+
+void Frame::reset_row_index() {
+	index = 0;
+}
+
+vector<double> Frame::next_row() {
+	vector<double> r = row(index);
+	index++;
+	if(index >= row_count) {
+		reset_row_index();
+	}
+	return r;
+}
+
 void Frame::head(size_t n) {
 	if(row_count < n) {
 		n = row_count;
