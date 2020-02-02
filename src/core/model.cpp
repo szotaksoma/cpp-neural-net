@@ -71,9 +71,29 @@ void Model::feed_forward(vector<double> iv) {
 		return;
 	}
 	for(size_t i = 0; i < input_layer->size; i++) {
-		input_layer->values[i] = iv[i];
+		input_layer->values[i] = input_layer->activation->function(iv[i]);
 	}
-	
+	for(Layer* l : layers) {
+		if(l->previous) {
+			for(unsigned int i = 0; i < l->size; i++) {
+				l->values[i] = 0;
+				for(unsigned int j = 0; j < l->previous->size; j++) {
+					l->values[i] += l->previous->values[j] * l->weights[i][j] + l->biases[i];
+				}
+				l->values[i] = l->activation->function(l->values[i]);
+			}
+		}
+	}
+}
+
+vector<double> Model::evaluate(vector<double> iv) {
+	feed_forward(iv);
+	vector<double> output;
+	Layer* output_layer = get_output();
+	for(unsigned int i = 0; i < output_layer->size; i++) {
+		output.push_back(output_layer->values[i]);
+	}
+	return output;
 }
 
 void Model::compile() {

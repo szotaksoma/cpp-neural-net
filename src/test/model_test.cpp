@@ -15,24 +15,31 @@ void signalHandler(int sig) {
 
 int main(int argc, const char** argv) {
 
-	signal(SIGINT, signalHandler); 
+	signal(SIGINT, signalHandler);
+	WeightInitializers::set_seed(1234);
 
-	for(int i = 0; i < 16; i++) {
-		Debug::info("Running test #" + to_string(i + 1));
-		Model* m = new Model("Model #" + to_string(i + 1));
-		m->add_layer(new InputLayer(16));
-		for(int l = 0; l < i; l++) {
-			m->add_layer(new HiddenLayer((l+1) * 64, ActivationType::RELU));
-		}
-		m->add_layer(new OutputLayer(4));
-		m->compile();
-		m->describe();
-		Debug::info("Disposing model");
-		delete m;
-		if(killed) {
-   		Debug::error("Process interrupted, exiting");
-			exit(signum);
-		}
+	vector<double> test_input;
+	for(int i = 0; i < 32; i++) {
+		test_input.push_back((double)i / 32.0);
+	}
+
+	Model* m = new Model("Test model");
+	m->add_layer(new InputLayer(32));
+	m->add_layer(new HiddenLayer(128, ActivationType::RELU));
+	m->add_layer(new HiddenLayer(128, ActivationType::RELU));
+	m->add_layer(new HiddenLayer(128, ActivationType::RELU));
+	m->add_layer(new OutputLayer(10));
+	m->compile();
+	m->describe();
+	vector<double> test_output = m->evaluate(test_input);
+	for(double d : test_output) {
+		Debug::info("Output: " + Debug::to_fixed(d), true);
+	}
+	Debug::info("Disposing model");
+	delete m;
+	if(killed) { 
+		Debug::error("Process interrupted, exiting");
+		exit(signum);
 	}
 
 	return 0;

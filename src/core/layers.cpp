@@ -110,30 +110,29 @@ OutputLayer::OutputLayer(unsigned int size, string name) {
 	trainable = true;
 }
 
+random_device _rd{};
+mt19937 _rng{_rd()};
+
+void WeightInitializers::set_seed(unsigned long seed) {
+	_rng.seed(seed);
+}
+
 void WeightInitializers::kaiming(Layer* l) {
-	static random_device rd{};
-	static mt19937 gen{rd()};
-	static normal_distribution<> dist{0.0, 1.0};
 	const double factor = sqrt(2.0 / (double) l->previous->size);
-	l->weights = (double**) malloc(l->size * sizeof(double*));
+	static normal_distribution<> dist{0.0, 1.0};
 	for(unsigned i = 0; i < l->size; i++) {
-		l->weights[i] = (double*) malloc(l->previous->size * sizeof(double));
 		for(unsigned j = 0; j < l->previous->size; j++) {
-			l->weights[i][j] = dist(gen) * factor;
+			l->weights[i][j] = dist(_rng) * factor;
 		}
 	}
 }
 
 void WeightInitializers::xavier(Layer* l) {
-	static random_device rd{};
-	static mt19937 gen{rd()};
 	const double limit = sqrt(6.0 / (double) (l->size + l->previous->size));
 	static uniform_real_distribution<> dist{-limit, limit};
-	l->weights = (double**) malloc(l->size * sizeof(double*));
 	for(unsigned i = 0; i < l->size; i++) {
-		l->weights[i] = (double*) malloc(l->previous->size * sizeof(double));
 		for(unsigned j = 0; j < l->previous->size; j++) {
-			l->weights[i][j] = dist(gen);
+			l->weights[i][j] = dist(_rng);
 		}
 	}
 }

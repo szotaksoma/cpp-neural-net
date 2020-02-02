@@ -57,6 +57,9 @@ namespace NeuralNet {
 
 	namespace WeightInitializers {
 
+		// Eplicitly set seed for random number generator
+		void set_seed(unsigned long);
+
 		// Initialize weights using Kaiming method (m -> layer size, n -> previous layer size)
 		void kaiming(Layer*);
 

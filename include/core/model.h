@@ -6,9 +6,6 @@
 #include <string>
 #include <vector>
 
-// TODO implement:
-// get_input(), get_output(), feed_forward(), evaluate() in "model.cpp"
-
 namespace NeuralNet {
 
 	class Model : public Namable {
