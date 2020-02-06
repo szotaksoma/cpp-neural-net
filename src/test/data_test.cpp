@@ -41,8 +41,10 @@ int main(int argc, const char** argv) {
 	df.add(s2);
 	df.add(s3);
 
-	Debug::info("Direct access");
+	Debug::info("Direct access using column name");
 	Debug::info(to_string(df["2s"][5]));
+	Debug::info("Direct access using column index");
+	Debug::info(to_string(df[0][5]));
 	Debug::info("Series::head()");
 	df["3s"].head();
 	Debug::info("Frame::head()");

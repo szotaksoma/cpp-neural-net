@@ -31,6 +31,9 @@ namespace NeuralNet::Errors {
 		
 		// Frame does not have key
 		void does_not_have_key(std::string);
+
+		// Frame index out of range
+		void index_out_of_range(std::string);
 	}
 
 	namespace Series {

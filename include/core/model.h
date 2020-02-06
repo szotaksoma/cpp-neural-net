@@ -33,7 +33,7 @@ namespace NeuralNet {
 			void compile();
 			// Feed data forward through the model
 			void feed_forward(std::vector<double> iv);
-			// Evaluate model output at given input data
+			// Evaluate model output over a single input point
 			std::vector<double> evaluate(std::vector<double>);
 			// Free resources used by model
 			void dispose();

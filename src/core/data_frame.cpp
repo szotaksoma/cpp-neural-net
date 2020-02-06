@@ -3,32 +3,49 @@
 using namespace std;
 using namespace NeuralNet::Data;
 
+template <typename T>
+bool contains(map<string, T> collection, string value) {
+	return !(collection.find(value) == collection.end());
+}
+
 Frame::Frame(string name) {
 	this->rename(name);
+	this->row_count = 0;
+	this->index = 0;
 }
 
 void Frame::add(Series series) {
-	if(data.find(series.name()) == data.end()) {
+	if(data_map.find(series.name()) == data_map.end()) {
 		row_count = get<0>(series.size());
-		data.insert(make_pair(series.name(), series));
+		data_map.insert(make_pair(series.name(), series));
+		data_vector.push_back(series);
 	} else {
 		Errors::Frame::already_has_key(name() + ": " + series.name());
 	}
 }
 
 Series Frame::operator[] (string key) {
-	if(data.find(key) != data.end()) {
-		return data.at(key);
+	if(contains(data_map, key)) {
+		return data_map.at(key);
 	} else {
 		Errors::Frame::does_not_have_key(name() + ": " + key);
 		return Series("");
 	}
 }
 
+Series Frame::operator[] (size_t index) {
+	if(data_vector.size() > index) {
+		return data_vector.at(index);
+	} else {
+		Errors::Frame::index_out_of_range(name() + ": " + to_string(index));
+		return Series("");
+	}
+}
+
 vector<double> Frame::row(size_t index) {
 	vector<double> r;
-	for(pair<string, Series> p : data) {
-		r.push_back(p.second[index]);
+	for(Series s : data_vector) {
+		r.push_back(s[index]);
 	}
 	return r;
 }
@@ -54,8 +71,8 @@ void Frame::head(size_t n) {
 	Debug::info("First " + std::to_string(n) + " rows of '" + name() + "'", true);
 	Debug::info("", true);
 	string header = "index";
-	for(pair<string, Series> p : data) {
-		header += "\t" + p.second.name();
+	for(Series s : data_vector) {
+		header += "\t" + s.name();
 	}
 	Debug::set_style_bold();
 	Debug::info(header, true);
@@ -63,8 +80,8 @@ void Frame::head(size_t n) {
 	string row;
 	for(size_t i = 0; i < n; i++) {
 		row = to_string(i);
-		for(pair<string, Series> p : data) {
-			row += "\t"+ Debug::to_fixed(p.second[i]);
+		for(Series s : data_vector) {
+			row += "\t"+ Debug::to_fixed(s[i]);
 		}
 		Debug::info(row, true);
 	}
@@ -72,6 +89,6 @@ void Frame::head(size_t n) {
 }
 
 tuple<size_t, size_t> Frame::size() {
-	const size_t row_count = get<0>(data.begin()->second.size());
-	return tuple<size_t, size_t>(row_count, data.size());
+	const size_t row_count = get<0>(data_vector[0].size());
+	return tuple<size_t, size_t>(row_count, data_vector.size());
 }
